@@ -10,14 +10,6 @@ enum Player {
 let PLAYER = Player.A
 let PLAYING = false
 
-/*
-From here to the 'pxt-sumo-player' specific code,
-the code below is a composition and refactoring of:
-- the ElecFreaks 'pxt-Cutebot-Pro' library:
-  https://github.com/elecfreaks/pxt-Cutebot-Pro/blob/master/v2.ts
-All under MIT-license.
-*/
-
 enum Led {
     //% block="left led"
     //% block.loc.nl="linker led"
@@ -187,19 +179,19 @@ namespace CutebotProV2 {
         let distance_h = distance >> 8;
         let distance_l = distance & 0xFF;
 
-        let direction: number
+        let direction2: number
         if (speed <= 0) {
             speed = -speed
-            direction = 3
+            direction2 = 3
         } else
-            direction = 0
+            direction2 = 0
   
         speed *= 5 // % to mm/s
         speed = ((speed > 500 ? 500 : speed) < 200 ? 200 : speed);
         let speed_h = speed >> 8;
         let speed_l = speed & 0xFF;
 
-        i2cCommandSend(0x84, [distance_h, distance_l, speed_h, speed_l, direction]);
+        i2cCommandSend(0x84, [distance_h, distance_l, speed_h, speed_l, direction2]);
         pid_delay_ms(Math.round(distance * 1.0 / 1000 * 8000 + 3000))
     }
 
@@ -253,10 +245,8 @@ namespace CutebotProV2 {
     }
 }
 
-/*
-Next code is original to the current 'pxt-soccer-player' library.
-(MIT-license)
-*/
+// Next code is original to the current 'pxt-soccer-player' library.
+// (MIT-license)
 
 basic.showNumber(1)
 basic.pause(1000)
@@ -294,35 +284,6 @@ enum Side {
     //% block.loc.nl="de rechter kant"
     Right
 }
-input.onButtonPressed(Button.A, function () {
-    if (PLAYER == Player.A)
-        PLAYER = Player.B
-    else
-        PLAYER = Player.A
-    display()
-})
-
-input.onButtonPressed(Button.B, function () {
-    PLAYING = false
-    CutebotProV2.motorControl(0, 0)
-})
-
-basic.forever(function () {
-    let state = CutebotProV2.trackingState()
-    let left = state & (TrackSensor.FarLeft + TrackSensor.Left)
-    let right = state & (TrackSensor.FarRight + TrackSensor.Right)
-    if (left && right) {
-        if (EventBothOutOfField) EventBothOutOfField
-    }
-    else
-    if (left) {
-        if (EventLeftOutOfField) EventLeftOutOfField
-    }
-    else
-    if (right) {
-        if (EventRightOutOfField) EventRightOutOfField
-    }
-})
 
 type eventHandler = () => void
 let EventLeftOutOfField: eventHandler
@@ -332,23 +293,6 @@ let EventWinner: eventHandler
 let EventLoser: eventHandler
 
 function handle(cmd: number) {
-
-    /*
-        commands are defined in pxt-soccer as:
-    
-        export enum COMMAND {
-            Start,
-            Stop,
-            PointA,
-            PointB,
-            DisallowA,
-            DisallowB,
-            WinnerA,
-            WinnerB,
-            DisqualA,
-            DisqualB
-        }
-    */
     switch (cmd) {
         case CMatch.COMMAND.Start:
             PLAYING = true
@@ -390,9 +334,31 @@ function display() {
         CutebotProV2.ledColor(Led.Both, Color.Yellow)
 }
 
-//% color="#00CC00" icon="\uf1f9"
-//% block="Sumo"
-//% block.loc.nl="Sumo"
+input.onButtonPressed(Button.A, function () {
+    if (PLAYER == Player.A)
+        PLAYER = Player.B
+    else
+        PLAYER = Player.A
+    display()
+})
+
+input.onButtonPressed(Button.B, function () {
+    CutebotProV2.motorControl(0, 0)
+    PLAYING = false
+})
+
+basic.forever(function () {
+    let state = CutebotProV2.trackingState()
+    let left = state & (TrackSensor.FarLeft + TrackSensor.Left)
+    let right = state & (TrackSensor.FarRight + TrackSensor.Right)
+    if (left && right)
+        if (EventBothOutOfField) EventBothOutOfField
+    if (left)
+        if (EventLeftOutOfField) EventLeftOutOfField
+    if (right)
+        if (EventRightOutOfField) EventRightOutOfField
+})
+
 namespace CSumoPlayer {
 
     //% color="#FFCC00"
