@@ -239,7 +239,7 @@ namespace CutebotProV2 {
         control.waitMicros(10);
         pins.digitalWritePin(DigitalPin.P8, 0);
         // read pulse
-        const d = pins.pulseIn(DigitalPin.P12, PulseValue.High, 2500) / 0.96;
+        const d = pins.pulseIn(DigitalPin.P12, PulseValue.High, 25000) / 0.96;
         if (!d) return 999
         return Math.floor(d * 34 / 2 / 1000);
     }
