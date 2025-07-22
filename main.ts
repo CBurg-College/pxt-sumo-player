@@ -426,6 +426,12 @@ namespace CSumoPlayer {
         return PLAYING
     }
 
+    //% block="stop"
+    //% block.loc.nl="stop"
+    export function stop() {
+        CutebotProV2.motorControl(0, 0)
+    }
+
     //% block="move %dir and %bend"
     //% block.loc.nl="rijd %dir en %bend"
     export function run(dir: Move, bend: Bend) {
@@ -463,13 +469,7 @@ namespace CSumoPlayer {
         CutebotProV2.motorControl(0, 0)
     }
 
-    //% block="stop"
-    //% block.loc.nl="stop"
-    export function stop() {
-        CutebotProV2.motorControl(0, 0)
-    }
-
-    //% subcategory="Kleuren"
+    //% subcategory="Show"
     //% color="#FFCC44"
     //% block="turn %led color %color"
     //% block.loc.nl="kleur %led %color"
@@ -478,7 +478,7 @@ namespace CSumoPlayer {
         CutebotProV2.ledColor(led, color)
     }
 
-    //% subcategory="Kleuren"
+    //% subcategory="Show"
     //% color="#FFCC44"
     //% block="turn both leds off"
     //% block.loc.nl="schakel beide leds uit"
