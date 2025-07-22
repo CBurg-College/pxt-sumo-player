@@ -351,6 +351,10 @@ function handle(cmd: number) {
         case CMatch.COMMAND.Start:
             PLAYING = true
             break;
+        case CMatch.COMMAND.Stop:
+            PLAYING = false
+            CutebotProV2.motorControl(0, 0)
+            break;
         case CMatch.COMMAND.PointA:
             if (PLAYER == Player.A) {
                 POINTS += 1
