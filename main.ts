@@ -434,7 +434,7 @@ namespace CSumoPlayer {
                 CutebotProV2.motorControl(0, 0)
                 return;
             }
-            basic.pause(25)
+            basic.pause(50)
         } while (cm > 20  && input.runningTime() < tm)
         CutebotProV2.motorControl(0, 0)
         NEAR = true
@@ -445,7 +445,7 @@ namespace CSumoPlayer {
     export function findOpponent() {
         let cm: number
         CutebotProV2.motorControl(-14, 14)
-        while (CutebotProV2.ultrasonic() > DIAMETER) { basic.pause(25) }
+        while (CutebotProV2.ultrasonic() > DIAMETER) { basic.pause(50) }
         CutebotProV2.motorControl(0, 0)
     }
 
