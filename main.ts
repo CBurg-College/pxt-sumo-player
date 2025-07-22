@@ -401,6 +401,25 @@ namespace CSumoPlayer {
         }
     }
 
+    //% block="push the opponent"
+    //% block.loc.nl="duw de tegenstander"
+    export function pushOpponent() {
+        let cm = CutebotProV2.ultrasonic()
+        if (cm > 20) return
+        CutebotProV2.motorControl(100, 100)
+    }
+
+    //% block="run to the opponent"
+    //% block.loc.nl="rijd naar de tegenstander"
+    export function runToOpponent() {
+        let cm = CutebotProV2.ultrasonic()
+        if (cm > 250) return
+        let tm = cm * 1000 / 30
+        CutebotProV2.motorControl(20, 20)
+        basic.pause(tm)
+        CutebotProV2.motorControl(0, 0)
+    }
+
     //% block="turn to the opponent"
     //% block.loc.nl="draai richting tegenstander"
     export function findOpponent() {
