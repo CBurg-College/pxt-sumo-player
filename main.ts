@@ -9,7 +9,6 @@ enum Player {
 
 let PLAYER = Player.A
 let PLAYING = false
-let POINTS = 0
 
 /*
 From here to the 'pxt-sumo-player' specific code,
@@ -167,7 +166,7 @@ namespace CutebotProV2 {
     export function motorControl(leftSpeed: number, rightSpeed: number): void {
         // speed in % [-100, 100]
 
-        if (!PLAYING) return
+//        if (!PLAYING) return
 
         let direction: number = 0;
         if (leftSpeed < 0)
@@ -181,7 +180,7 @@ namespace CutebotProV2 {
         // speed in % [-100, -40] backward and [40, 100] forward
         // distance in cm [0, 6000]
 
-        if (!PLAYING) return
+//        if (!PLAYING) return
 
         distance = ((distance > 6000 ? 6000 : distance) < 0 ? 0 : distance);
         distance *= 10 // cm to mm
@@ -357,30 +356,6 @@ function handle(cmd: number) {
             CutebotProV2.motorControl(0, 0)
             PLAYING = false
             break;
-        case CMatch.COMMAND.PointA:
-            if (PLAYER == Player.A) {
-                POINTS += 1
-                display()
-            }
-            break;
-        case CMatch.COMMAND.PointB:
-            if (PLAYER == Player.B) {
-                POINTS += 1
-                display()
-            }
-            break;
-        case CMatch.COMMAND.DisallowA:
-            if (PLAYER == Player.A && POINTS > 0) {
-                POINTS -= 1
-                display()
-            }
-            break;
-        case CMatch.COMMAND.DisallowB:
-            if (PLAYER == Player.B && POINTS > 0) {
-                POINTS -= 1
-                display()
-            }
-            break;
         case CMatch.COMMAND.WinnerA:
         case CMatch.COMMAND.DisqualB:
             if (PLAYER == Player.A) {
@@ -408,7 +383,6 @@ function handle(cmd: number) {
 }
 
 function display() {
-    basic.showNumber(POINTS)
     if (PLAYER == Player.A)
         CutebotProV2.ledColor(Led.Both, Color.Blue)
     else
@@ -484,6 +458,7 @@ namespace CSumoPlayer {
     //% block.loc.nl="kies speler %player"
     export function setPlayer(player: Player) {
         PLAYER = player
+        display()
     }
 
     //% subcategory="Show"
