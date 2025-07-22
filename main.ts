@@ -249,7 +249,7 @@ namespace CutebotProV2 {
 // (MIT-license)
 
 const DIAMETER = 100    // field diameter in cm
-let NEARBY = false      // nearby the oppenent after running to it
+let NEAR = false        // close to the oppenent after running to it
 
 basic.showNumber(1)
 basic.pause(1000)
@@ -412,18 +412,18 @@ namespace CSumoPlayer {
         CutebotProV2.motorControl(100, 100)
     }
 
-    //% block="near the opponent"
-    //% block.loc.nl="dichtbij de tegenstander"
+    //% block="the opponent is close"
+    //% block.loc.nl="de tegenstander dichtbij is"
     export function nearOpponent(): boolean {
-        let val = NEARBY
-        NEARBY = false
+        let val = NEAR
+        NEAR = false
         return val
     }
 
     //% block="run to the opponent"
     //% block.loc.nl="rijd naar de tegenstander"
     export function runToOpponent() {
-        NEARBY = false
+        NEAR = false
         let cm = CutebotProV2.ultrasonic()
         if (cm > DIAMETER) return
         let tm = input.runningTime() + cm * 1000 / 25
@@ -438,7 +438,7 @@ namespace CSumoPlayer {
         } while (CutebotProV2.ultrasonic() > 20
                  && input.runningTime() < tm)
         CutebotProV2.motorControl(0, 0)
-        NEARBY = true
+        NEAR = true
     }
 
     //% block="turn to the opponent"
