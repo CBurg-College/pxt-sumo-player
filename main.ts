@@ -238,6 +238,19 @@ namespace CutebotProV2 {
         return pins.i2cReadNumber(cutebotProAddr, NumberFormat.UInt8LE, false)
     }
 */
+
+    export function ultrasonic(): number {
+        // send pulse
+        pins.setPull(DigitalPin.P8, PinPullMode.PullNone);
+        pins.digitalWritePin(DigitalPin.P8, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(DigitalPin.P8, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(DigitalPin.P8, 0);
+        // read pulse
+        const d = pins.pulseIn(DigitalPin.P12, PulseValue.High, 2500) / 0.96;
+        return Math.floor(d * 34 / 2 / 1000);
+    }
 }
 
 /*
@@ -275,6 +288,7 @@ input.onButtonPressed(Button.A, function () {
 })
 
 input.onButtonPressed(Button.B, function () {
+    PLAYING = false
     CutebotProV2.motorControl(0, 0)
 })
 
@@ -366,8 +380,6 @@ function display() {
 //% block.loc.nl="Sudo"
 namespace CSudoPlayer {
 
-    let SPEED = 0
-
     //% color="#FFCC00"
     //% block="when left side is out of the field"
     //% block.loc.nl="wanneer de linkerkant buiten het speelveld is"
@@ -423,18 +435,26 @@ namespace CSudoPlayer {
     //% block="push the opponent"
     //% block.loc.nl="duw de tegenstander"
     export function pushOpponent() {
+        CutebotProV2.motorControl(100, 100)
     }
 
     //% subcategory="Bewegen"
     //% block="run to the opponent"
     //% block.loc.nl="rijd naar de tegenstander"
     export function approachOpponent() {
+        CutebotProV2.motorControl(50, 50)
     }
 
     //% subcategory="Bewegen"
     //% block="turn to the opponent"
     //% block.loc.nl="draai richting tegenstander"
     export function findOpponent() {
+        let cm: number
+        CutebotProV2.motorControl(-20, 20)
+        do {
+            cm = CutebotProV2.ultrasonic()
+        } while (cm < 5|| cm > 160)
+        CutebotProV2.motorControl(0, 0)
     }
 
     //% subcategory="Bewegen"
