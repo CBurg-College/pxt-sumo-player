@@ -12,7 +12,7 @@ let PLAYING = false
 let POINTS = 0
 
 /*
-From here to the 'pxt-sudo-player' specific code,
+From here to the 'pxt-sumo-player' specific code,
 the code below is a composition and refactoring of:
 - the ElecFreaks 'pxt-Cutebot-Pro' library:
   https://github.com/elecfreaks/pxt-Cutebot-Pro/blob/master/v2.ts
@@ -20,14 +20,14 @@ All under MIT-license.
 */
 
 enum Led {
-    //% block="left"
-    //% block.loc.nl="links"
+    //% block="left led"
+    //% block.loc.nl="linker led"
     Left,
-    //% block="right"
-    //% block.loc.nl="rechts"
+    //% block="right led"
+    //% block.loc.nl="rechter led"
     Right,
-    //% block="both"
-    //% block.loc.nl="beide"
+    //% block="both leds"
+    //% block.loc.nl="beide leds"
     Both
 }
 
@@ -292,6 +292,25 @@ input.onButtonPressed(Button.B, function () {
     CutebotProV2.motorControl(0, 0)
 })
 
+basic.forever(function () {
+    let state = CutebotProV2.trackingState()
+    if (state)
+        CutebotProV2.motorControl(0, 0)
+    let left = state & (TrackSensor.FarLeft + TrackSensor.Left)
+    let right = state & (TrackSensor.FarRight + TrackSensor.Right)
+    if (left && right) {
+        if (EventBothOutOfField) EventBothOutOfField
+    }
+    else
+    if (left) {
+        if (EventLeftOutOfField) EventLeftOutOfField
+    }
+    else
+    if (right) {
+        if (EventRightOutOfField) EventRightOutOfField
+    }
+})
+
 type eventHandler = () => void
 let EventLeftOutOfField: eventHandler
 let EventRightOutOfField: eventHandler
@@ -376,9 +395,9 @@ function display() {
 }
 
 //% color="#00CC00" icon="\uf1f9"
-//% block="Sudo"
-//% block.loc.nl="Sudo"
-namespace CSudoPlayer {
+//% block="Sumo"
+//% block.loc.nl="Sumo"
+namespace CSumoPlayer {
 
     //% color="#FFCC00"
     //% block="when left side is out of the field"
@@ -401,51 +420,38 @@ namespace CSudoPlayer {
         EventBothOutOfField = programmableCode;
     }
 
-    basic.forever(function () {
-        let state = CutebotProV2.trackingState()
-        let left = state & (TrackSensor.FarLeft + TrackSensor.Left)
-        let right = state & (TrackSensor.FarRight + TrackSensor.Right)
-        if (left && right) {
-            if (EventBothOutOfField) EventBothOutOfField
-        }
-        else
-        if (left) {
-            if (EventLeftOutOfField) EventLeftOutOfField
-        }
-        else
-        if (right) {
-            if (EventRightOutOfField) EventRightOutOfField
-        }
-    })
-
     //% block="game started"
     //% block.loc.nl="spel is gestart"
     export function isPlaying() {
         return PLAYING
     }
 
-    //% subcategory="Bewegen"
-    //% block="run %cm cm %dir and %bend"
-    //% block.loc.nl="rijd %cm cm %dir en %bend"
-    //% cm.max=200 cm.min=0
-    export function run(cm: number, dir: Move, bend: Bend) {
+    //% block="move %dir and %bend"
+    //% block.loc.nl="rijd %dir en %bend"
+    export function run(dir: Move, bend: Bend) {
+        let speed: number
+        if (dir == Move.Forward) speed = 50
+        else speed = -50
+
+        switch (bend) {
+            case Bend.None: CutebotProV2.motorControl(speed, speed); break;
+            case Bend.Left: CutebotProV2.motorControl(speed, 0); break;
+            case Bend.Right: CutebotProV2.motorControl(0, speed); break;
+        }
     }
 
-    //% subcategory="Bewegen"
     //% block="push the opponent"
     //% block.loc.nl="duw de tegenstander"
     export function pushOpponent() {
         CutebotProV2.motorControl(100, 100)
     }
 
-    //% subcategory="Bewegen"
     //% block="run to the opponent"
     //% block.loc.nl="rijd naar de tegenstander"
     export function approachOpponent() {
         CutebotProV2.motorControl(50, 50)
     }
 
-    //% subcategory="Bewegen"
     //% block="turn to the opponent"
     //% block.loc.nl="draai richting tegenstander"
     export function findOpponent() {
@@ -457,7 +463,6 @@ namespace CSudoPlayer {
         CutebotProV2.motorControl(0, 0)
     }
 
-    //% subcategory="Bewegen"
     //% block="stop"
     //% block.loc.nl="stop"
     export function stop() {
@@ -466,10 +471,11 @@ namespace CSudoPlayer {
 
     //% subcategory="Kleuren"
     //% color="#FFCC44"
-    //% block="show color %color"
-    //% block.loc.nl="toon de kleur %color"
+    //% block="turn %led color %color"
+    //% block.loc.nl="kleur %led %color"
     //% color.defl=Color.White
-    export function showColor(color: Color) {
+    export function showColor(led: Led, color: Color) {
+        CutebotProV2.ledColor(led, color)
     }
 
     //% subcategory="Kleuren"
@@ -477,6 +483,7 @@ namespace CSudoPlayer {
     //% block="turn both leds off"
     //% block.loc.nl="schakel beide leds uit"
     export function turnLedsOff() {
+        CutebotProV2.ledColor( Led.Both, Color.None)
     }
 
     //% subcategory="Show"
