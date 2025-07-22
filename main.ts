@@ -426,31 +426,36 @@ namespace CSumoPlayer {
 
         switch (bend) {
             case Bend.None: CutebotProV2.motorControl(speed, speed); break;
-            case Bend.Left: CutebotProV2.motorControl(speed, 0); break;
-            case Bend.Right: CutebotProV2.motorControl(0, speed); break;
+            case Bend.Left: CutebotProV2.motorControl(0, speed); break;
+            case Bend.Right: CutebotProV2.motorControl(speed, 0); break;
         }
     }
 
     //% block="push the opponent"
     //% block.loc.nl="duw de tegenstander"
     export function pushOpponent() {
-        CutebotProV2.motorControl(100, 100)
+        CutebotProV2.motorControl(50, 50)
     }
 
     //% block="run to the opponent"
     //% block.loc.nl="rijd naar de tegenstander"
     export function approachOpponent() {
-        CutebotProV2.motorControl(50, 50)
+        let cm: number
+        CutebotProV2.motorControl(25, 25)
+        do {
+            cm = CutebotProV2.ultrasonic()
+        } while (cm > 10)
+        CutebotProV2.motorControl(0, 0)
     }
 
     //% block="turn to the opponent"
     //% block.loc.nl="draai richting tegenstander"
     export function findOpponent() {
         let cm: number
-        CutebotProV2.motorControl(-20, 20)
+        CutebotProV2.motorControl(-10, 10)
         do {
             cm = CutebotProV2.ultrasonic()
-        } while (cm < 5|| cm > 160)
+        } while (cm < 5|| cm > 30)
         CutebotProV2.motorControl(0, 0)
     }
 
