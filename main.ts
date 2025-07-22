@@ -1,9 +1,9 @@
 enum Player {
-    //% block="A"
-    //% block.loc.nl="A"
+    //% block="blue"
+    //% block.loc.nl="blauw"
     A,
-    //% block="B"
-    //% block.loc.nl="B"
+    //% block="yellow"
+    //% block.loc.nl="geel"
     B
 }
 
@@ -258,6 +258,8 @@ Next code is original to the current 'pxt-soccer-player' library.
 (MIT-license)
 */
 
+display()
+
 enum Move {
     //% block="forward"
     //% block.loc.nl="vooruit"
@@ -305,8 +307,6 @@ input.onButtonPressed(Button.B, function () {
 
 basic.forever(function () {
     let state = CutebotProV2.trackingState()
-    if (state)
-        CutebotProV2.motorControl(0, 0)
     let left = state & (TrackSensor.FarLeft + TrackSensor.Left)
     let right = state & (TrackSensor.FarRight + TrackSensor.Right)
     if (left && right) {
@@ -403,6 +403,10 @@ function handle(cmd: number) {
 
 function display() {
     basic.showNumber(POINTS)
+    if (PLAYER == Player.A)
+        CutebotProV2.ledColor(Led.Both, Color.Blue)
+    else
+        CutebotProV2.ledColor(Led.Both, Color.Yellow)
 }
 
 //% color="#00CC00" icon="\uf1f9"
@@ -468,6 +472,12 @@ namespace CSumoPlayer {
             cm = CutebotProV2.ultrasonic()
         } while (cm < 5|| cm > 160)
         CutebotProV2.motorControl(0, 0)
+    }
+
+    //% block="choose player %player"
+    //% block.loc.nl="kies speler %player"
+    export function setPlayer(player: Player) {
+        PLAYER = player
     }
 
     //% subcategory="Show"
