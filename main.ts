@@ -414,9 +414,14 @@ namespace CSumoPlayer {
     export function runToOpponent() {
         let cm = CutebotProV2.ultrasonic()
         if (cm > 250) return
-        let tm = cm * 1000 / 30
+        let tm = input.runningTime() + cm * 1000 / 25
         CutebotProV2.motorControl(20, 20)
-        basic.pause(tm)
+        do {
+            cm = CutebotProV2.ultrasonic()
+            if (cm == 999) break;
+            basic.pause(1)
+        } while (CutebotProV2.ultrasonic() > 20
+                 && input.runningTime() < tm)
         CutebotProV2.motorControl(0, 0)
     }
 
