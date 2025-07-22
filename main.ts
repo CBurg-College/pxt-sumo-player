@@ -359,6 +359,9 @@ basic.forever(function () {
         if (EventRightOutOfField) EventRightOutOfField
 })
 
+//% color="#00CC00" icon="\uf1f9"
+//% block="Sumo"
+//% block.loc.nl="Sumo"
 namespace CSumoPlayer {
 
     //% color="#FFCC00"
