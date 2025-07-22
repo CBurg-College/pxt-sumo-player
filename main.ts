@@ -279,6 +279,17 @@ enum Bend {
     Right
 }
 
+enum Side {
+    //% block="both sides"
+    //% block.loc.nl="beide kanten"
+    Both,
+    //% block="the left side"
+    //% block.loc.nl="de linker kant"
+    Left,
+    //% block="the right side"
+    //% block.loc.nl="de rechter kant"
+    Right
+}
 input.onButtonPressed(Button.A, function () {
     if (PLAYER == Player.A)
         PLAYER = Player.B
@@ -400,24 +411,14 @@ function display() {
 namespace CSumoPlayer {
 
     //% color="#FFCC00"
-    //% block="when left side is out of the field"
-    //% block.loc.nl="wanneer de linkerkant buiten het speelveld is"
-    export function onEventLeftOutOfField(programmableCode: () => void): void {
-        EventLeftOutOfField = programmableCode;
-    }
-
-    //% color="#FFCC00"
-    //% block="when right side is out of the field"
-    //% block.loc.nl="wanneer de rechterkant buiten het speelveld is"
-    export function onEventRightOutOfField(programmableCode: () => void): void {
-        EventRightOutOfField = programmableCode;
-    }
-
-    //% color="#FFCC00"
-    //% block="when both sides are out of the field"
-    //% block.loc.nl="wanneer beide kanten uit het speelveld zijn"
-    export function onEventBothOutOfField(programmableCode: () => void): void {
-        EventBothOutOfField = programmableCode;
+    //% block="when %side is out of the field"
+    //% block.loc.nl="wanneer %side buiten het speelveld is"
+    export function onEventLeftOutOfField(side: Side, programmableCode: () => void): void {
+        switch (side) {
+            case Side.Both: EventBothOutOfField = programmableCode; break;
+            case Side.Left: EventLeftOutOfField = programmableCode; break;
+            case Side.Right: EventRightOutOfField = programmableCode; break;
+        }
     }
 
     //% block="game started"
@@ -470,7 +471,7 @@ namespace CSumoPlayer {
     }
 
     //% subcategory="Show"
-    //% color="#FFCC44"
+    //% color="#00CC00"
     //% block="turn %led color %color"
     //% block.loc.nl="kleur %led %color"
     //% color.defl=Color.White
@@ -479,7 +480,7 @@ namespace CSumoPlayer {
     }
 
     //% subcategory="Show"
-    //% color="#FFCC44"
+    //% color="#00CC00"
     //% block="turn both leds off"
     //% block.loc.nl="schakel beide leds uit"
     export function turnLedsOff() {
