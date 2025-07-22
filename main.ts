@@ -168,6 +168,7 @@ namespace CutebotProV2 {
         // speed in % [-100, 100]
 
         if (!PLAYING) return
+basic.showString("P")
 
         let direction: number = 0;
         if (leftSpeed < 0)
@@ -258,6 +259,8 @@ Next code is original to the current 'pxt-soccer-player' library.
 (MIT-license)
 */
 
+basic.showNumber(1)
+basic.pause(1000)
 display()
 
 enum Move {
@@ -349,9 +352,11 @@ function handle(cmd: number) {
     */
     switch (cmd) {
         case CMatch.COMMAND.Start:
+basic.showString("O")
             PLAYING = true
             break;
         case CMatch.COMMAND.Stop:
+basic.showString("X")
             PLAYING = false
             CutebotProV2.motorControl(0, 0)
             break;
