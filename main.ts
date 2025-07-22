@@ -248,7 +248,8 @@ namespace CutebotProV2 {
 // Next code is original to the current 'pxt-soccer-player' library.
 // (MIT-license)
 
-const DIAMETER = 100 // field diameter in cm
+const DIAMETER = 100    // field diameter in cm
+let NEARBY = false      // nearby the oppenent after running to it
 
 basic.showNumber(1)
 basic.pause(1000)
@@ -411,24 +412,33 @@ namespace CSumoPlayer {
         CutebotProV2.motorControl(100, 100)
     }
 
+    //% block="near the opponent"
+    //% block.loc.nl="dichtbij de tegenstander"
+    export function nearOpponent(): boolean {
+        let val = NEARBY
+        NEARBY = false
+        return val
+    }
+
     //% block="run to the opponent"
     //% block.loc.nl="rijd naar de tegenstander"
-    export function runToOpponent(): boolean {
+    export function runToOpponent() {
+        NEARBY = false
         let cm = CutebotProV2.ultrasonic()
-        if (cm > DIAMETER) return false
+        if (cm > DIAMETER) return
         let tm = input.runningTime() + cm * 1000 / 25
         CutebotProV2.motorControl(20, 20)
         do {
             cm = CutebotProV2.ultrasonic()
             if (cm > DIAMETER) {
                 CutebotProV2.motorControl(0, 0)
-                return false;
+                return;
             }
             basic.pause(1)
         } while (CutebotProV2.ultrasonic() > 20
                  && input.runningTime() < tm)
         CutebotProV2.motorControl(0, 0)
-        return true
+        NEARBY = true
     }
 
     //% block="turn to the opponent"
