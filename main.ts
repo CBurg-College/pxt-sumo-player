@@ -248,6 +248,7 @@ namespace CutebotProV2 {
         pins.digitalWritePin(DigitalPin.P8, 0);
         // read pulse
         const d = pins.pulseIn(DigitalPin.P12, PulseValue.High, 2500) / 0.96;
+        if (!d) return 999
         return Math.floor(d * 34 / 2 / 1000);
     }
 }
@@ -421,13 +422,13 @@ namespace CSumoPlayer {
     //% block.loc.nl="rijd %dir en %bend"
     export function run(dir: Move, bend: Bend) {
         let speed: number
-        if (dir == Move.Forward) speed = 50
-        else speed = -50
+        if (dir == Move.Forward) speed = 30
+        else speed = -30
 
         switch (bend) {
             case Bend.None: CutebotProV2.motorControl(speed, speed); break;
-            case Bend.Left: CutebotProV2.motorControl(0, speed); break;
-            case Bend.Right: CutebotProV2.motorControl(speed, 0); break;
+            case Bend.Left: CutebotProV2.motorControl(speed/2, speed); break;
+            case Bend.Right: CutebotProV2.motorControl(speed, speed/2); break;
         }
     }
 
@@ -441,7 +442,7 @@ namespace CSumoPlayer {
     //% block.loc.nl="rijd naar de tegenstander"
     export function approachOpponent() {
         let cm: number
-        CutebotProV2.motorControl(25, 25)
+        CutebotProV2.motorControl(30, 30)
         do {
             cm = CutebotProV2.ultrasonic()
         } while (cm > 10)
@@ -452,7 +453,7 @@ namespace CSumoPlayer {
     //% block.loc.nl="draai richting tegenstander"
     export function findOpponent() {
         let cm: number
-        CutebotProV2.motorControl(-10, 10)
+        CutebotProV2.motorControl(-25, 25)
         do {
             cm = CutebotProV2.ultrasonic()
         } while (cm < 5|| cm > 30)
