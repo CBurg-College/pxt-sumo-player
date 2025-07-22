@@ -427,7 +427,7 @@ namespace CSumoPlayer {
         CutebotProV2.motorControl(-14, 14)
         do {
             cm = CutebotProV2.ultrasonic()
-        } while (cm < 5|| cm > 30)
+        } while (cm > 100)
         CutebotProV2.motorControl(0, 0)
     }
 
