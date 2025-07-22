@@ -168,7 +168,6 @@ namespace CutebotProV2 {
         // speed in % [-100, 100]
 
         if (!PLAYING) return
-basic.showString("P")
 
         let direction: number = 0;
         if (leftSpeed < 0)
@@ -352,13 +351,11 @@ function handle(cmd: number) {
     */
     switch (cmd) {
         case CMatch.COMMAND.Start:
-basic.showString("O")
             PLAYING = true
             break;
         case CMatch.COMMAND.Stop:
-basic.showString("X")
-            PLAYING = false
             CutebotProV2.motorControl(0, 0)
+            PLAYING = false
             break;
         case CMatch.COMMAND.PointA:
             if (PLAYER == Player.A) {
