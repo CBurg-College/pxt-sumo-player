@@ -232,16 +232,25 @@ namespace CutebotProV2 {
 
     export function ultrasonic(): number {
         // send pulse
+    
         pins.setPull(DigitalPin.P8, PinPullMode.PullNone);
         pins.digitalWritePin(DigitalPin.P8, 0);
         control.waitMicros(2);
         pins.digitalWritePin(DigitalPin.P8, 1);
         control.waitMicros(10);
         pins.digitalWritePin(DigitalPin.P8, 0);
+    
         // read pulse
-        const d = pins.pulseIn(DigitalPin.P12, PulseValue.High, 25000) / 0.96;
-        if (!d) return 999
-        return Math.floor(d * 34 / 2 / 1000);
+
+        // the next code is replacing the original since
+        // driving the motors causes interference with pulseIn
+
+        while (!pins.digitalReadPin(DigitalPin.P12)) { }
+        let tm1 = input.runningTimeMicros()
+        while (pins.digitalReadPin(DigitalPin.P12)) { }
+        let tm2 = input.runningTimeMicros()
+        let dist = (tm2 - tm1) * 343 / 20000
+        return Math.floor(dist)
     }
 }
 
@@ -444,9 +453,11 @@ namespace CSumoPlayer {
     //% block.loc.nl="draai richting tegenstander"
     export function findOpponent() {
         let cm: number
-        CutebotProV2.motorControl(-14, 14)
-        while (CutebotProV2.ultrasonic() > DIAMETER) { basic.pause(25) }
-        CutebotProV2.motorControl(0, 0)
+        do {
+            CutebotProV2.motorControl(-100, 100)  
+            basic.pause(100)          
+            CutebotProV2.motorControl(0, 0)
+        } while (CutebotProV2.ultrasonic() > DIAMETER)
     }
 
     //% block="choose player %player"
