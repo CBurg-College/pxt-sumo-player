@@ -247,7 +247,10 @@ namespace CutebotProV2 {
 
         while (!pins.digitalReadPin(DigitalPin.P12)) { }
         let tm1 = input.runningTimeMicros()
-        while (pins.digitalReadPin(DigitalPin.P12)) { }
+        while (pins.digitalReadPin(DigitalPin.P12)) {
+            if ( input.runningTimeMicros() - tm1 > 7288)
+                return 999 // timeout at further than 250 cm
+        }
         let tm2 = input.runningTimeMicros()
         let dist = (tm2 - tm1) * 343 / 20000
         return Math.floor(dist)
@@ -443,7 +446,6 @@ namespace CSumoPlayer {
                 CutebotProV2.motorControl(0, 0)
                 return;
             }
-            basic.pause(25)
         } while (cm > 20  && input.runningTime() < tm)
         CutebotProV2.motorControl(0, 0)
         NEAR = true
@@ -452,12 +454,9 @@ namespace CSumoPlayer {
     //% block="turn to the opponent"
     //% block.loc.nl="draai richting tegenstander"
     export function findOpponent() {
-        let cm: number
-        do {
-            CutebotProV2.motorControl(-100, 100)  
-            basic.pause(100)          
-            CutebotProV2.motorControl(0, 0)
-        } while (CutebotProV2.ultrasonic() > DIAMETER)
+        CutebotProV2.motorControl(-15, 15)
+        while (CutebotProV2.ultrasonic() > DIAMETER) {}
+        CutebotProV2.motorControl(0, 0)
     }
 
     //% block="choose player %player"
