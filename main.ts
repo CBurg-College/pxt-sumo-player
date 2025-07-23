@@ -260,8 +260,8 @@ namespace CutebotProV2 {
 // Next code is original to the current 'pxt-soccer-player' library.
 // (MIT-license)
 
-const DIAMETER = 70     // field diameter in cm
-let NEAR = false        // close to the oppenent after running to it
+let DIAMETER = 100 // field diameter in cm
+let NEAR = false   // close to the oppenent after running to it
 
 basic.showNumber(1)
 basic.pause(1000)
