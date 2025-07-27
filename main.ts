@@ -158,7 +158,7 @@ namespace CutebotProV2 {
     export function motorControl(leftSpeed: number, rightSpeed: number): void {
         // speed in % [-100, 100]
 
-//        if (!PLAYING) return
+        if (!PLAYING) return
 
         let direction: number = 0;
         if (leftSpeed < 0)
@@ -172,7 +172,7 @@ namespace CutebotProV2 {
         // speed in % [-100, -40] backward and [40, 100] forward
         // distance in cm [0, 6000]
 
-//        if (!PLAYING) return
+        if (!PLAYING) return
 
         distance = ((distance > 6000 ? 6000 : distance) < 0 ? 0 : distance);
         distance *= 10 // cm to mm
