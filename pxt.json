@@ -5,7 +5,9 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "pxt-match": "github:cburg-college/pxt-match#6f4fb83b7f2b4db18e31c1b6314e11a86dc7549a"
+        "pxt-match": "github:cburg-college/pxt-match#6f4fb83b7f2b4db18e31c1b6314e11a86dc7549a",
+        "pxt-colorsensor": "github:CBurg-College/pxt-colorsensor#c6f957d1eeb75d762934345480beb3be0781bd1c",
+        "pxt-cutebot": "github:CBurg-College/pxt-cutebot#424ebccb316d4c2c9af141e1ccec011c49baf157"
     },
     "files": [
         "main.blocks",
