@@ -307,17 +307,17 @@ let EventBothOutOfField: eventHandler
 let EventWinner: eventHandler
 let EventLoser: eventHandler
 
-function handle(cmd: number) {
-    switch (cmd) {
-        case CMatch.COMMAND.Start:
+setMatchHandling(() => {
+    switch (MATCH) {
+        case Match.Start:
             PLAYING = true
             break;
-        case CMatch.COMMAND.Stop:
+        case Match.Stop:
             CutebotProV2.motorControl(0, 0)
             PLAYING = false
             break;
-        case CMatch.COMMAND.WinnerA:
-        case CMatch.COMMAND.DisqualB:
+        case Match.WinnerA:
+        case Match.DisqualB:
             if (PLAYER == Player.A) {
                 if (EventWinner) EventWinner()
                 display()
@@ -327,8 +327,8 @@ function handle(cmd: number) {
                 display()
             }
             break;
-        case CMatch.COMMAND.WinnerB:
-        case CMatch.COMMAND.DisqualA:
+        case Match.WinnerB:
+        case Match.DisqualA:
             if (PLAYER == Player.B) {
                 if (EventWinner) EventWinner()
                 display()
@@ -339,8 +339,8 @@ function handle(cmd: number) {
             }
             break;
     }
-    PLAYING = (cmd == CMatch.COMMAND.Start)
-}
+    PLAYING = (MATCH == Match.Start)
+})
 
 function display() {
     if (PLAYER == Player.A)
@@ -348,6 +348,10 @@ function display() {
     else
         CutebotProV2.ledColor(Led.Both, Color.Yellow)
 }
+
+displayAfterLogo(() => {
+    display()
+})
 
 input.onButtonPressed(Button.A, function () {
     if (PLAYER == Player.A)
