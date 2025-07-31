@@ -6,8 +6,8 @@
         "radio": "*",
         "microphone": "*",
         "pxt-match": "github:cburg-college/pxt-match#6f4fb83b7f2b4db18e31c1b6314e11a86dc7549a",
-        "pxt-colorsensor": "github:cburg-college/pxt-colorsensor#a621754bf63be4e96fc359f6c4567e425bf9ce4a",
-        "pxt-cutebot": "github:cburg-college/pxt-cutebot#c88e10971d2048793343ead1fd1e917009d8bf8b"
+        "pxt-colorsensor": "github:cburg-college/pxt-colorsensor#981e9feac4eb8bd8cc2d8809c738ece931dead30",
+        "pxt-cutebot": "github:cburg-college/pxt-cutebot#5131b67a0a0c999598d752fa9945c7f2ed983b9c"
     },
     "files": [
         "main.blocks",
@@ -18,7 +18,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "8.0.11",
+        "target": "8.0.13",
         "targetId": "microbit"
     },
     "supportedTargets": [
