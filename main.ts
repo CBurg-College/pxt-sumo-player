@@ -107,16 +107,16 @@ displayAfterLogo(() => {
 })
 
 input.onButtonPressed(Button.A, function () {
+    Cutebot.setSpeed(0, 0)
+    PLAYING = false
+})
+
+input.onButtonPressed(Button.B, function () {
     if (PLAYER == Player.A)
         PLAYER = Player.B
     else
         PLAYER = Player.A
     display()
-})
-
-input.onButtonPressed(Button.B, function () {
-    Cutebot.setSpeed(0, 0)
-    PLAYING = false
 })
 
 basic.forever(function () {
